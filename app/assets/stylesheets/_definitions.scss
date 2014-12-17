@@ -1,0 +1,104 @@
+$app: (
+
+  name: prey,
+
+  layout: (
+    mobile: off-canvas,
+    desktop: horizontal,
+  ),
+
+  regions: (
+
+    menu: (
+      off-canvas: (
+        position: left,
+        animation: reveal,
+        target: main
+      ),
+      layout: vertical,
+      regions: (
+        brand: (),
+        navigation: (
+          flex: true,
+        ),
+        options: (),
+      ),
+    ),
+
+    main: (
+      flex: true,
+      layout: vertical,
+      regions: (
+        header: (
+          show-on: mobile,
+        ),
+        sections: (
+          flex: true,
+        ),
+      ),
+    ),
+
+  ),
+
+);
+
+
+$section: (
+
+  name: section,
+
+  layout: (
+    phone: stacked,
+    tablet: horizontal,
+  ),
+
+  regions: (
+    aside: (),
+    content: (
+      flex: true,
+    ),
+  ),
+
+);
+
+
+$panel: (
+
+  name: panel,
+  layout: vertical,
+
+  regions: (
+
+    header: (),
+
+    body: (
+      flex: true,
+      scrollable: true,
+    ),
+
+    footer: (),
+  ),
+
+);
+
+
+$page: (
+
+  name: page,
+  layout: vertical,
+
+  regions: (
+
+    header: (
+      wrapper: content,
+    ),
+
+    body: (
+      flex: true,
+      scrollable: true,
+      wrapper: content,
+    ),
+
+  ),
+
+);

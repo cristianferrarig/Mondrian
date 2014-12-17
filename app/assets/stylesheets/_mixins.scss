@@ -1,0 +1,7 @@
+@mixin layout($options) {
+  content: "layout";
+}
+
+@mixin view($options) {
+  content: "view";
+}

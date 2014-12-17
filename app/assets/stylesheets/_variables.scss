@@ -1,0 +1,52 @@
+$layers: (
+  // overlay
+  dialog:                 600,
+  backdrop:               500,
+  // View bars
+  front:                  400,
+  // View states
+  next:                   300,
+  current:                200,
+  back:                   100,
+);
+
+
+$animations: (
+  reveal,
+  push,
+  appear,
+);
+
+$layouts: (
+  vertical,
+  horizontal,
+  columns,
+  stacked,
+  off-canvas,
+);
+
+$breakpoints: (
+  phone:      "",
+  tablet:     "",
+  laptop:     "",
+  desktop:    "",
+  cinema:     "",
+  mini:       480px,
+  small:      768px,
+  medium:     992px,
+  large:      1200px,
+  oversized:  1500px,
+  container:  960px,
+);
+
+$attributes: (
+  scrollable,
+  flex
+);
+
+$off-canvas: (
+  position,
+  animation,
+  target
+);
+
