@@ -1,6 +1,15 @@
+/*
+
+.app
+  .app-menu
+  .app-main
+    .app-header
+    .app-sections
+
+*/
 $app: (
 
-  name: prey,
+  name: app,
 
   layout: (
     mobile: off-canvas,
@@ -13,7 +22,7 @@ $app: (
       off-canvas: (
         position: left,
         animation: reveal,
-        target: main
+        target: main,
       ),
       layout: vertical,
       regions: (
@@ -43,6 +52,16 @@ $app: (
 );
 
 
+/*
+
+.section
+  .section-aside
+    .section-inner
+
+  .section-content
+    .section-inner
+
+*/
 $section: (
 
   name: section,
@@ -53,15 +72,27 @@ $section: (
   ),
 
   regions: (
-    aside: (),
+    aside: (
+      wrapper: inner,
+    ),
     content: (
       flex: true,
+      wrapper: inner,
     ),
   ),
 
 );
 
 
+/*
+
+.panel
+  .panel-header
+  .panel-nav
+  .panel-body
+  .panel-footer
+
+*/
 $panel: (
 
   name: panel,
@@ -70,6 +101,8 @@ $panel: (
   regions: (
 
     header: (),
+
+    nav: (),
 
     body: (
       flex: true,
@@ -82,6 +115,16 @@ $panel: (
 );
 
 
+/*
+
+.page
+  .page-header
+    .page-content
+
+  .page-body
+    .page-content
+
+*/
 $page: (
 
   name: page,
