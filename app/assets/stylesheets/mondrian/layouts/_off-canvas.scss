@@ -1,8 +1,16 @@
-%off-canvas-view   { @extend %fixed-view;   z-index: layer(current); }
-%off-canvas-top    { @extend %fixed-top;    z-index: layer(front); transform: translate3d(   0, -100%, 0); }
-%off-canvas-left   { @extend %fixed-left;   z-index: layer(front); transform: translate3d(-100%,   0,  0); }
-%off-canvas-bottom { @extend %fixed-bottom; z-index: layer(front); transform: translate3d( 100%,   0,  0); }
-%off-canvas-right  { @extend %fixed-right;  z-index: layer(front); transform: translate3d(   0,  100%, 0); }
+%off-canvas-view   { @extend %fixed-view;   };
+%off-canvas-top    { @extend %fixed-top;    };
+%off-canvas-left   { @extend %fixed-left;   };
+%off-canvas-bottom { @extend %fixed-bottom; };
+%off-canvas-right  { @extend %fixed-right;  };
+
+%off-canvas-view   { z-index: layer(current); };                           //   X     Y   Z
+%off-canvas-top    { z-index: layer(front);   @include transform(translate3d(   0, -100%, 0)); };
+%off-canvas-right  { z-index: layer(front);   @include transform(translate3d( 100%,   0,  0)); };
+%off-canvas-bottom { z-index: layer(front);   @include transform(translate3d(   0,  100%, 0)); };
+%off-canvas-left   { z-index: layer(front);   @include transform(translate3d(-100%,   0,  0)); };
+
+%off-canvas-transition { @include transition(transform 300ms); };
 
 // Layout Structure
 @mixin off-canvas-layout($module-config) {
@@ -18,21 +26,35 @@
 
     @each $region in $regions {
 
-      $region: nth($region, 2);
-
+      $region:         nth($region, 2);
       $submodule-name: map-get($region, name);
       $off-canvas:     map-get($region, off-canvas);
       $behavior:       map-get($region, behavior);
       $size-value:     map-get($region, size);
       $is-vertical:    ($off-canvas == top) or ($off-canvas == bottom);
       $size-prop:      if($is-vertical, height, width);
+      $animate:        if(($behavior == reveal), false, true);
 
       &-#{$submodule-name} {
         @extend %off-canvas-#{$off-canvas};
-        @if($behavior == reveal)  { z-index: layer(back); }
         #{$size-prop}: $size-value;
+        @if ($behavior == reveal) {
+          z-index: layer(back);
+        }
+        @else if ($behavior == appear) {}
+        @else if ($behavior == push)   {}
+
+        @if ($animate == true) {
+          @extend %off-canvas-transition;
+        }
       }
 
+      // Remove it if control this from js
+      &-active-#{$submodule-name} {
+        .#{$module-name}-#{$submodule-name} {
+          @include transform(translate3d( 0, 0, 0));
+        }
+      }
     }
 
   }
