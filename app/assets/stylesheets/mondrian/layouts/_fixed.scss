@@ -1,0 +1,140 @@
+
+// Base positions
+%fixed-view   { @extend %stretch; }
+%fixed-top    { @extend %stretch; bottom: auto; }
+%fixed-left   { @extend %stretch; right:  auto; }
+%fixed-bottom { @extend %stretch; top:    auto; }
+%fixed-right  { @extend %stretch; left:   auto; }
+
+
+
+// Layout Structure
+@mixin fixed-vertical-layout($module-config) {
+
+  // Temporal variables
+  $module-name: map-deep-get($module-config, name);
+  $regions:     map-get($module-config, regions);
+  $header-size: map-deep-get($regions, header, size);
+  $nav-size:    map-deep-get($regions, nav,    size);
+  $footer-size: map-deep-get($regions, footer, size);
+
+  // Module definition
+  .#{$module-name} {
+    &        { @extend %fixed-view; }
+    &-body   { @extend %fixed-view; }
+    &-header { @extend %fixed-top;  }
+    &-nav    { @extend %fixed-top; }
+    &-footer { @extend %fixed-bottom; }
+
+    &-header { height: $header-size; }
+    &-nav    { height: $nav-size; }
+    &-footer { height: $footer-size; }
+
+    &-header         ~ &-nav  { top:    $header-size; }
+    &-header         ~ &-body { top:    $header-size; }
+    &-nav            ~ &-body { top:    $nav-size; }
+    &-footer         ~ &-body { bottom: $footer-size; }
+    &-header + &-nav ~ &-body { top:    $header-size + $nav-size; }
+  }
+
+  // Only for debug
+  $background: #DDD;
+
+  .#{$module-name} {
+    &-header { background-color: lighten($background,12%); }
+    &-nav    { background-color: lighten($background,10%); }
+    &-body   { background-color: lighten($background, 5%); }
+    &-footer { background-color: lighten($background,10%); }
+  }
+
+}
+
+// Layout Structure
+@mixin fixed-horizontal-layout($module-config) {
+
+  // Temporal variables
+  $module-name: map-deep-get($module-config, name);
+  $regions:     map-get($module-config, regions);
+  $menu-size:   map-deep-get($regions, menu,  size);
+  $nav-size:    map-deep-get($regions, nav,   size);
+  $aside-size:  map-deep-get($regions, aside, size);
+
+  // Module definition
+  .#{$module-name} {
+    &       { @extend %fixed-view; }
+    &-body  { @extend %fixed-view; }
+
+    &-menu  { @extend %fixed-left; }
+    &-nav   { @extend %fixed-left; }
+    &-aside { @extend %fixed-right; }
+
+    &-menu  { width: $menu-size; }
+    &-nav   { width: $nav-size; }
+    &-aside { width: $aside-size; }
+
+    &-menu         ~ &-nav  { left:  $menu-size; }
+    &-menu         ~ &-body { left:  $menu-size; }
+    &-nav          ~ &-body { left:  $nav-size; }
+    &-aside        ~ &-body { right: $aside-size; }
+    &-menu + &-nav ~ &-body { left:  $menu-size + $nav-size; }
+  }
+
+  // Only for debug
+  $background: #DDD;
+
+  .#{$module-name} {
+    &-menu  { background-color: lighten($background,12%); }
+    &-nav   { background-color: lighten($background,10%); }
+    &-body  { background-color: lighten($background,5%); }
+    &-aside { background-color: lighten($background,10%); }
+  }
+
+}
+
+
+
+// Vertical layout
+$fixed-vertical-module: (
+  name: fixed-vertical,
+  layout: vertical,
+  regions: (
+    header: (
+      size: 50px,
+    ),
+    nav: (
+      size: 40px,
+    ),
+    body: (
+      flexible: true,
+      scrollable: true,
+    ),
+    footer: (
+      size: 60px,
+    ),
+  ),
+);
+
+@include fixed-vertical-layout($fixed-vertical-module);
+
+// Horizontal layout
+$fixed-horizontal-module: (
+  name: fixed-horizontal,
+  layout: horizontal,
+  regions: (
+    menu: (
+      size: 90px,
+    ),
+    nav: (
+      size: 320px,
+    ),
+    body: (
+      flexible: true,
+      scrollable: true,
+    ),
+    aside: (
+      size: 200px,
+    ),
+  ),
+);
+
+@include fixed-horizontal-layout($fixed-horizontal-module);

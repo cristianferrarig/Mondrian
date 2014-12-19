@@ -1,0 +1,86 @@
+%off-canvas-view   { @extend %fixed-view;   z-index: layer(current); }
+%off-canvas-top    { @extend %fixed-top;    z-index: layer(front); transform: translate3d(   0, -100%, 0); }
+%off-canvas-left   { @extend %fixed-left;   z-index: layer(front); transform: translate3d(-100%,   0,  0); }
+%off-canvas-bottom { @extend %fixed-bottom; z-index: layer(front); transform: translate3d( 100%,   0,  0); }
+%off-canvas-right  { @extend %fixed-right;  z-index: layer(front); transform: translate3d(   0,  100%, 0); }
+
+// Layout Structure
+@mixin off-canvas-layout($module-config) {
+
+  // Temporal variables
+  $module-name: map-deep-get($module-config, name);
+  $layout:      map-deep-get($module-config, layout);
+
+  $regions:     map-get($module-config, regions);
+
+  // Module definition
+  .#{$module-name} {
+
+    @each $region in $regions {
+
+      $region: nth($region, 2);
+
+      $submodule-name: map-get($region, name);
+      $off-canvas:     map-get($region, off-canvas);
+      $behavior:       map-get($region, behavior);
+      $size-value:     map-get($region, size);
+      $is-vertical:    ($off-canvas == top) or ($off-canvas == bottom);
+      $size-prop:      if($is-vertical, height, width);
+
+      &-#{$submodule-name} {
+        @extend %off-canvas-#{$off-canvas};
+        @if($behavior == reveal)  { z-index: layer(back); }
+        #{$size-prop}: $size-value;
+      }
+
+    }
+
+  }
+
+  // Only for debug
+  $background: #DDD;
+
+  .#{$module-name} {
+    &-main   { background-color: lighten($background, 5%); }
+    &-menu,
+    &-aside  { background-color: lighten($background,10%); }
+    &-header,
+    &-footer { background-color: lighten($background,20%); }
+  }
+
+}
+
+// Vertical layout
+$off-canvas-module: (
+  name: off-canvas,
+  layout: off-canvas,
+  regions: (
+    1: (
+      name: main,
+      off-canvas: view,
+    ),
+    2: (
+      name: header,
+      off-canvas: top,
+      size: 100px,
+      behavior: reveal,
+    ),
+    3: (
+      name: footer,
+      off-canvas: bottom,
+      size: 200px,
+    ),
+    4: (
+      name: menu,
+      off-canvas: left,
+      size: 320px,
+    ),
+    5: (
+      name: aside,
+      off-canvas: right,
+      size: 550px,
+    ),
+  ),
+);
+
+@include off-canvas-layout($off-canvas-module);

@@ -1,0 +1,32 @@
+// Visibility
+%base-bisibility {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  transform: translate3d(0, 0, 0);
+  visibility: hidden;
+  display: none;
+}
+
+.visible,
+.current {
+  visibility: visible !important;
+  display: block !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
+// Base layout
+%stretch {
+  position: absolute;
+  top:      0;
+  right:    0;
+  bottom:   0;
+  left:     0;
+}
+
+%scrollable {
+  overflow: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  // without min-height:0 overflow scrolling doesn't work
+  min-height: 0;
+}

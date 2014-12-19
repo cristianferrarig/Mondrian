@@ -1,16 +1,3 @@
-$layers: (
-  // overlay
-  dialog:                 600,
-  backdrop:               500,
-  // View bars
-  front:                  400,
-  // View states
-  next:                   300,
-  current:                200,
-  back:                   100,
-);
-
-
 $animations: (
   reveal,
   push,
@@ -49,4 +36,3 @@ $off-canvas: (
   animation,
   target,
 );
-

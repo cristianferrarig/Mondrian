@@ -1,0 +1,102 @@
+//
+//  MEDIA QUERY VARIABLES, FUNCTIONS AND MIXIN
+//  gist.github.com/cristianferrarig/4755293
+//
+//  @author  Cristian Ferrari
+//  @email   cristianferrarig@gmail.com
+//  @github  cristianferrarig
+//
+//  # Usage
+//  @import "prey/utils/mediaquery";
+//
+//  # SCSS usage:
+//  @media screen #{to(phone)} { /* CSS here */ }
+//
+//  # Or mixin usage:
+//  @include respond(to phone)   { /* CSS here ... */ };
+//  @include respond(from phone) { /* CSS here ... */ };
+//
+//  @include respond(to 320px)   { /* CSS here ... */ };
+//  @include respond(from 320px) { /* CSS here ... */ };
+//
+//  @include respond(from 320px, 2x)                  { /* CSS here ... */ };
+//  @include respond(from 320px, portrait)            { /* CSS here ... */ };
+//  @include respond(from 320px, to 500px, landscape) { /* CSS here ... */ };
+//
+//  @include respond(from 320px, to 500px)   { /* CSS here ... */ };
+//  @include respond(from 320px, to(medium)) { /* CSS here ... */ };
+//
+
+// Supported breakpoints
+// $breakpoints: (
+//   phone:          $size-mini,
+//   tablet:         $size-small,
+//   laptop:         $size-medium,
+//   desktop:        $size-large,
+//   cinema:         $size-oversized,
+//   container:      $size-container,
+// );
+
+@function breakpoint($name) {
+  @return map-get($breakpoints, $name);
+  /*
+  @if map-has-key($breakpoints, $name) {
+   @return map-get($breakpoints, $name);
+  }
+  @else {
+    @error "$name is not a valid breakpoint, was #{$name}.";
+  }
+  */
+}
+
+@function from($size) {
+  $media: $size + 1; /* but */ @if type-of($size) == string { $media: breakpoint($size) + 1; }
+  @return unquote('and (min-width: #{$media})');
+}
+
+@function to($size) {
+  $media: $size; /* but */ @if type-of($size) == string { $media: breakpoint($size); }
+  @return unquote('and (max-width: #{$media})');
+}
+
+@function only($size-from,$size-to) {
+  @return unquote('and (min-width: #{$size-from + 1}) and (max-width: #{$size-to})');
+}
+
+@function orientation($type) {
+  @return unquote('and (orientation: #{$type})');
+}
+
+@function resolution($size) {
+  @return unquote('and (-webkit-min-device-pixel-ratio: #{$size}), (min-resolution: #{96 * $size}dpi)');
+}
+
+@mixin respond($breakpoints...) {
+  $mediatype:  screen;
+  $mediaquery: null;
+
+  @if nth($breakpoints, 1) == print {
+    $mediatype: print;
+  }
+  @else {
+    @each $breakpoint in $breakpoints {
+
+      @if type-of($breakpoint) == list {
+        $condition: nth($breakpoint, 1);
+        $size:      nth($breakpoint, 2);
+
+        @if      $condition == 'from' { $breakpoint: from($size); }
+        @else if $condition == 'to'   { $breakpoint: to($size); }
+      }
+      @else if $breakpoint == portrait  { $breakpoint: orientation(portrait);  }
+      @else if $breakpoint == landscape { $breakpoint: orientation(landscape); }
+      @else if $breakpoint == retina    { $breakpoint: resolution(2); }
+
+      $mediaquery: append($mediaquery, $breakpoint, space);
+    }
+
+    @media #{$mediatype} #{$mediaquery} {
+      @content;
+    }
+  }
+}

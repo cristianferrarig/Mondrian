@@ -1,0 +1,35 @@
+@mixin layout($options) {
+  @include debug-map($options);
+  content: "layout"
+}
+
+@mixin view($options) {
+  @include debug-map($options);
+
+  $module:        map-get($options,name);
+  $layout:        map-get($options,layout);
+  $regions:       map-get($options,regions);
+  $regions_names: map-keys($regions);
+
+  .#{$module} {
+    content: "#{$module}";
+
+    @each $region in $regions_names {
+
+      $height:     map-deep-get($regions, $region, height);
+      $scrollable: map-deep-get($regions, $region, scrollable);
+      $flexible:   map-deep-get($regions, $region, flexible);
+
+      &-#{$region} {
+        content: "#{$region}";
+
+        @if ($layout == vertical) && ($flexible != true) {
+          height: $height;
+        }
+
+      }
+
+    }
+  }
+
+}

@@ -1,5 +1,6 @@
-PATH
-  remote: ../frontkit
+GIT
+  remote: git://github.com/cristianferrarig/frontkit.git
+  revision: 3bb70d8547c7f33bd1406e15b835ca0215f5232c
   specs:
     frontkit (0.0.3)
       coffee-script (~> 2.2)
@@ -27,6 +28,9 @@ GEM
       tzinfo (~> 1.1)
     autoprefixer-rails (3.1.2.20141016)
       execjs
+    bourbon (3.2.3)
+      sass (~> 3.2)
+      thor
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coffee-script (2.3.0)
@@ -147,4 +151,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bourbon
   frontkit (~> 0.0.3)!

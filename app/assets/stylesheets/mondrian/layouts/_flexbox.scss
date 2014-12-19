@@ -1,0 +1,79 @@
+// Base positions
+%flex-view {
+  @extend %stretch;
+  @include display(flex);
+  @include align-items(stretch);
+  @include justify-content(flex-start);
+}
+%flex-vertical {
+  @extend %flex-view;
+  @include flex-direction(column);
+}
+%flex-horizontal {
+  @extend %flex-view;
+  @include flex-direction(row);
+}
+%flex-content {
+  @include flex(1);
+}
+
+// Layout Structure
+@mixin flex-layout($module-config) {
+
+  // Temporal variables
+  $module-name: map-deep-get($module-config, name);
+  $layout:      map-deep-get($module-config, layout);
+
+  $regions:     map-get($module-config, regions);
+  $header-size: map-deep-get($regions, header, size);
+  $nav-size:    map-deep-get($regions, nav,    size);
+  $footer-size: map-deep-get($regions, footer, size);
+
+  // Module definition
+  .#{$module-name} {
+    &       { @extend %flex-#{$layout}; }
+    &-body  { @extend %flex-content; }
+
+    $size-property: if($layout == vertical, height, width);
+
+    &-header { #{$size-property}: $header-size; }
+    &-nav    { #{$size-property}: $nav-size; }
+    &-footer { #{$size-property}: $footer-size; }
+  }
+
+  // Only for debug
+  $background: #DDD;
+
+  .#{$module-name} {
+    &-header { background-color: lighten($background,12%); }
+    &-nav    { background-color: lighten($background,10%); }
+    &-body   { background-color: lighten($background, 5%); }
+    &-footer { background-color: lighten($background,10%); }
+  }
+
+}
+
+
+
+// Vertical layout
+$flex-vertical-module: (
+  name: flex-vertical,
+  layout: vertical,
+  regions: (
+    header: (
+      size: 50px,
+    ),
+    nav: (
+      size: 40px,
+    ),
+    body: (
+      flexible: true,
+      scrollable: true,
+    ),
+    footer: (
+      size: 60px,
+    ),
+  ),
+);
+
+@include flex-layout($flex-vertical-module);

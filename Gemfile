@@ -5,6 +5,7 @@ source "http://rubygems.org"
 # gem 'middleman', '~> 4.0.0.alpha.2'
 
 gem "frontkit", "~> 0.0.3", github: "cristianferrarig/frontkit"
+gem 'bourbon'
 # gem "frontkit", "~> 0.0.3", path: "../frontkit"
 
 # gem "middleman-blog",       "~> 3.4.1"

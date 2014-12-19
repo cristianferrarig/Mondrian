@@ -1,0 +1,25 @@
+$layers: (
+  // overlay
+  dialog:                 600,
+  backdrop:               500,
+  // View bars
+  front:                  400,
+  // View states
+  next:                   300,
+  current:                200,
+  back:                   100,
+);
+
+%layer {
+  @each $layer in $layers {
+    $name:  nth($layer,1);
+    $value: nth($layer,2);
+    &-#{$name} {
+      z-index: $value;
+    }
+  }
+}
+
+@function layer($name) {
+  @return map-get($layers, $name);
+};

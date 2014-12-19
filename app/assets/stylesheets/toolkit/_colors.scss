@@ -1,0 +1,11 @@
+@function solid($color, $background: white) {
+  $percent: alpha($color) * 100%;
+  $opaque: opacify($color, 1);
+  $solid-color: mix($opaque, $background, $percent);
+  @return $solid-color;
+}
+
+@mixin alpha-attr($attribute, $alpha-color, $background: white) {
+  #{$attribute}: solid($alpha-color, $background);
+  #{$attribute}: $alpha-color;
+}

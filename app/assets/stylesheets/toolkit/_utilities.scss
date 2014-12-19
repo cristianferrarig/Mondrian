@@ -1,0 +1,10 @@
+$oposite-directions: (
+  top:    bottom,
+  right:  left,
+  bottom: top,
+  left:   right
+);
+
+@function oposite($direction) {
+  @return map-get($oposite-directions, $direction);
+}

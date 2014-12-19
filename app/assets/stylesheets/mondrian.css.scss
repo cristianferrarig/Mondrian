@@ -1,13 +1,17 @@
 @charset "utf-8";
 
-@import "variables";
-@import "layout";
-@import "view";
-@import "mixins";
+@import "bourbon";
+@import "toolkit";
 
-@import "definitions";
-@import "example";
+@import "mondrian/base";
+@import "mondrian/variables";
+@import "mondrian/layouts";
+@import "mondrian/mixins";
 
 body {
   font-family: sans-serif;
+}
+
+.hidden {
+  display: none;
 }
