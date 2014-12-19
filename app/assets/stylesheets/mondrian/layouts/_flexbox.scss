@@ -15,30 +15,34 @@
 }
 %flex-content {
   @include flex(1);
+  position: relative;
 }
+
 
 // Layout Structure
 @mixin flex-layout($module-config) {
 
   // Temporal variables
-  $module-name: map-deep-get($module-config, name);
-  $layout:      map-deep-get($module-config, layout);
-
+  $module-name: map-get($module-config, name);
+  $layout:      map-get($module-config, layout);
   $regions:     map-get($module-config, regions);
-  $header-size: map-deep-get($regions, header, size);
-  $nav-size:    map-deep-get($regions, nav,    size);
-  $footer-size: map-deep-get($regions, footer, size);
 
   // Module definition
   .#{$module-name} {
     &       { @extend %flex-#{$layout}; }
     &-body  { @extend %flex-content; }
 
-    $size-property: if($layout == vertical, height, width);
+    @each $region in $regions {
+      $region:         nth($region, 2);
+      $submodule-name: map-get($region, name);
+      $size-value:     map-get($region, size);
+      $size-prop:      if($layout == vertical, height, width);
 
-    &-header { #{$size-property}: $header-size; }
-    &-nav    { #{$size-property}: $nav-size; }
-    &-footer { #{$size-property}: $footer-size; }
+      &-#{$submodule-name} {
+        #{$size-prop}: $size-value;
+      }
+    }
+
   }
 
   // Only for debug
@@ -52,28 +56,3 @@
   }
 
 }
-
-
-
-// Vertical layout
-$flex-vertical-module: (
-  name: flex-vertical,
-  layout: vertical,
-  regions: (
-    header: (
-      size: 50px,
-    ),
-    nav: (
-      size: 40px,
-    ),
-    body: (
-      flexible: true,
-      scrollable: true,
-    ),
-    footer: (
-      size: 60px,
-    ),
-  ),
-);
-
-@include flex-layout($flex-vertical-module);

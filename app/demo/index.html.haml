@@ -1,4 +1,4 @@
-.off-canvas
+%div{ class: "off-canvas" }
   .off-canvas-header header
   .off-canvas-footer footer
   .off-canvas-menu   menu
@@ -6,33 +6,40 @@
 
   .off-canvas-main
 
-    .fixed-horizontal
-      .fixed-horizontal-menu
+    %div{ class: "fixed-h" }
+      .fixed-h-menu
         menu
-      .fixed-horizontal-nav
+      .fixed-h-nav
 
-        .fixed-vertical
-          .fixed-vertical-header
+        %div{ class: "fixed-v" }
+          .fixed-v-header
             heaeder
-          .fixed-vertical-nav
+          .fixed-v-nav
             nav
-          .fixed-vertical-body
+          .fixed-v-body
             body
-          .fixed-vertical-footer
+          .fixed-v-footer
             footer
 
-      .fixed-horizontal-aside
+      .fixed-h-aside
         aside
 
-      .fixed-horizontal-body
-        .flex-vertical
-          .flex-vertical-header
+      .fixed-h-body
+
+        %div{ class: "flex-v" }
+          .flex-v-header
             heaeder
-          .flex-vertical-nav
+          .flex-v-nav
             nav
-          .flex-vertical-body
-            body
-          .flex-vertical-footer
+          .flex-v-body
+
+            %div{ class: "flex-h" }
+              .flex-h-menu
+                heaeder
+              .flex-h-body
+                nav
+
+          .flex-v-footer
             footer
 
 

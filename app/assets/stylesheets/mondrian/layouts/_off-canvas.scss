@@ -16,9 +16,8 @@
 @mixin off-canvas-layout($module-config) {
 
   // Temporal variables
-  $module-name: map-deep-get($module-config, name);
-  $layout:      map-deep-get($module-config, layout);
-
+  $module-name: map-get($module-config, name);
+  $layout:      map-get($module-config, layout);
   $regions:     map-get($module-config, regions);
 
   // Module definition
@@ -71,38 +70,3 @@
   }
 
 }
-
-// Vertical layout
-$off-canvas-module: (
-  name: off-canvas,
-  layout: off-canvas,
-  regions: (
-    1: (
-      name: main,
-      off-canvas: view,
-    ),
-    2: (
-      name: header,
-      off-canvas: top,
-      size: 100px,
-      behavior: reveal,
-    ),
-    3: (
-      name: footer,
-      off-canvas: bottom,
-      size: 200px,
-    ),
-    4: (
-      name: menu,
-      off-canvas: left,
-      size: 320px,
-    ),
-    5: (
-      name: aside,
-      off-canvas: right,
-      size: 550px,
-    ),
-  ),
-);
-
-@include off-canvas-layout($off-canvas-module);

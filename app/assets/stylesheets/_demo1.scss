@@ -1,0 +1,137 @@
+// Vertical layout
+$fixed-vertical: (
+  name: fixed-v,
+  layout: vertical,
+  regions: (
+    1: (
+      name: header,
+      size: 50px,
+    ),
+    2: (
+      name: nav,
+      size: 40px,
+    ),
+    3: (
+      name: body,
+      flexible: true,
+      scrollable: true,
+    ),
+    4: (
+      name: footer,
+      size: 60px,
+    ),
+  ),
+);
+
+@include fixed-vertical-layout($fixed-vertical);
+
+
+// Horizontal layout
+$fixed-horizontal: (
+  name: fixed-h,
+  layout: horizontal,
+  regions: (
+    1: (
+      name: menu,
+      size: 90px,
+    ),
+    2: (
+      name: nav,
+      size: 320px,
+    ),
+    3: (
+      name: body,
+      flexible: true,
+      scrollable: true,
+    ),
+    4: (
+      name: aside,
+      size: 200px,
+    ),
+  ),
+);
+
+@include fixed-horizontal-layout($fixed-horizontal);
+
+
+// Vertical layout
+$flex-vertical: (
+  name: flex-v,
+  layout: vertical,
+  regions: (
+    1: (
+      name: header,
+      size: 50px,
+    ),
+    2: (
+      name: nav,
+      size: 40px,
+    ),
+    3: (
+      name: body,
+      flexible: true,
+      scrollable: true,
+    ),
+    4: (
+      name: footer,
+      size: 60px,
+    ),
+  ),
+);
+
+@include flex-layout($flex-vertical);
+
+// Vertical layout
+$flex-horizontal: (
+  name: flex-h,
+  layout: horizontal,
+  regions: (
+    1: (
+      name: menu,
+      size: 100px,
+    ),
+    2: (
+      name: body,
+      flexible: true,
+      scrollable: true,
+    ),
+  ),
+);
+
+@include flex-layout($flex-horizontal);
+
+
+// Vertical layout
+$off-canvas: (
+  name: off-canvas,
+  layout: off-canvas,
+  regions: (
+    1: (
+      name: main,
+      off-canvas: view,
+    ),
+    2: (
+      name: header,
+      off-canvas: top,
+      size: 100px,
+      behavior: reveal,
+    ),
+    3: (
+      name: footer,
+      off-canvas: bottom,
+      size: 200px,
+    ),
+    4: (
+      name: menu,
+      off-canvas: left,
+      size: 320px,
+    ),
+    5: (
+      name: aside,
+      off-canvas: right,
+      size: 550px,
+    ),
+  ),
+);
+
+@include off-canvas-layout($off-canvas);
