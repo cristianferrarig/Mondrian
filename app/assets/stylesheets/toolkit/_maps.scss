@@ -48,3 +48,31 @@
         }
     }
 }
+
+@mixin debug-list($list) {
+    @at-root {
+        @debug-list {
+            //__toString__: inspect($list);
+            __length__: length($list);
+            __keys__: list-keys($list);
+            __properties__ {
+                @each $value in $list {
+                    #{type-of($value)}: inspect($value);
+                }
+            }
+        }
+    }
+}
+
+@mixin debug($source) {
+  $type: type-of($source);
+  @if      ($type == list) { @include debug-list($source); }
+  @else if ($type == map)  { @include debug-map($source); }
+  @else    {
+    @at-root {
+      @debug-n {
+        content: "#{$source}";
+      }
+    }
+  }
+}

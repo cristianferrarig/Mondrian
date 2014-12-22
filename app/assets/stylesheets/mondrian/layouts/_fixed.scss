@@ -12,6 +12,38 @@
   $module-name: map-get($module-config, name);
   $regions:     map-get($module-config, regions);
 
+  // Contendrá la posición de la region flexible.
+  $flex_region_number:       length($regions);
+  // Aquí se distribuiran los elementos segun su posición.
+  $pre_flex_region_map:      ();
+  $post_flex_region_map:     ();
+
+  @each $region_number, $region_values in $regions {
+
+    // Obtener la posición de contenedor flexible.
+    $is_flexible: if(map-get($region_values, flexible), true, false);
+
+    // Preparar region para ser agrupada.
+    $region_to_merge: ( #{$region_number}: map-deep-get($regions, $region_number) );
+
+    @if ($is_flexible) {
+      // Setea el numero del contenedor flexible
+      $flex_region_number: $region_number;
+    }
+    @else {
+      // Asignar a cada region a su respectivo grupo
+      @if ($region_number < $flex_region_number) {
+        $pre_flex_region_map: map-merge($pre_flex_region_map, $region_to_merge);
+      }
+      @else if ($region_number > $flex_region_number) {
+        $post_flex_region_map: map-merge($post_flex_region_map, $region_to_merge);
+      }
+    }
+  }
+
+  @include debug($pre_flex_region_map);
+  @include debug($post_flex_region_map);
+
   // Temporal variables
   $header-size: map-deep-get($regions, 1, size);
   $nav-size:    map-deep-get($regions, 2, size);
@@ -19,6 +51,10 @@
 
   // Module definition
   .#{$module-name} {
+
+    $combinations: combine($regions);
+    //@include debug($combinations);
+
     &        { @extend %fixed-view; }
     &-body   { @extend %fixed-view; }
     &-header { @extend %fixed-top;  }

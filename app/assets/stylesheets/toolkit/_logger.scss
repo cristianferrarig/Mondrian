@@ -210,12 +210,12 @@
 @include logger-help;
 
 // Log stuff
-@include INFO("Hey, look at that.");
-@include INFO("Bring in the unicorns!");
-@include WARN("Dude, pay attention.");
+// @include INFO("Hey, look at that.");
+// @include INFO("Bring in the unicorns!");
+// @include WARN("Dude, pay attention.");
 
 // This one is not printed in the console but still tracked in logs.
-@include DEBUG("Debug and stuff.");
+// @include DEBUG("Debug and stuff.");
 
 // Output history (optional),
 // especially useful for debugging.

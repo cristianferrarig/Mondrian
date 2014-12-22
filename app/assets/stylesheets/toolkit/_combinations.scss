@@ -1,0 +1,8 @@
+@function combine($input,$min: 1) {
+  $results: ();
+  //$total:   pow(2, 2);
+  $result: length($input);
+
+  @return $result;
+}
+

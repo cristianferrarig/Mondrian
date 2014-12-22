@@ -19,6 +19,8 @@ configure :development do
   # set :debug_assets, true
 end
 
+sprockets.append_path File.join "#{root}", "vendor/bower"
+
 # Build-specific configuration
 configure :build do
 
