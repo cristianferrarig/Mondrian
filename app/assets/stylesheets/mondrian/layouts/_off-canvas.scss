@@ -4,7 +4,7 @@
 %off-canvas-bottom { @extend %fixed-bottom; };
 %off-canvas-right  { @extend %fixed-right;  };
 
-%off-canvas-view   { z-index: layer(current); };                           //   X     Y   Z
+%off-canvas-view   { z-index: layer(current); overflow: hidden; };         //   X     Y   Z
 %off-canvas-top    { z-index: layer(front);   @include transform(translate3d(   0, -100%, 0)); };
 %off-canvas-right  { z-index: layer(front);   @include transform(translate3d( 100%,   0,  0)); };
 %off-canvas-bottom { z-index: layer(front);   @include transform(translate3d(   0,  100%, 0)); };
@@ -22,6 +22,7 @@
 
   // Module definition
   .#{$module-name} {
+    @extend %off-canvas-view;
 
     @each $region in $regions {
 
@@ -46,6 +47,22 @@
         @if ($animate == true) {
           @extend %off-canvas-transition;
         }
+
+        @if $debugger {
+          /* INI: DEBUGGER */
+          @if ($off-canvas == view) {
+            margin: $debugger-spacing;
+          }
+          @else {
+            @if $is-vertical {
+              margin: 0 $debugger-spacing;
+            }
+            @else {
+              margin: $debugger-spacing 0;
+            }
+          }
+        }
+
       }
 
       // Remove it if control this from js
@@ -56,17 +73,6 @@
       }
     }
 
-  }
-
-  // Only for debug
-  $background: #DDD;
-
-  .#{$module-name} {
-    &-main   { background-color: lighten($background, 5%); }
-    &-menu,
-    &-aside  { background-color: lighten($background,10%); }
-    &-header,
-    &-footer { background-color: lighten($background,20%); }
   }
 
 }

@@ -1,0 +1,19 @@
+// Vertical layout
+$home: (
+  name: home,
+  layout: flex,
+  orientation: horizontal,
+  regions: (
+    (
+      name: info,
+      //flexible: true,
+    ),
+    (
+      name: content,
+      //flexible: true,
+    ),
+  ),
+);
+
+// @include fixed-vertical-layout($fixed-vertical);
+@include layout($home);

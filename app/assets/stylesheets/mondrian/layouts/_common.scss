@@ -17,10 +17,19 @@
 // Base layout
 %stretch {
   position: absolute;
-  top:      0;
-  right:    0;
-  bottom:   0;
-  left:     0;
+  @if $debugger {
+    /* INI: DEBUGGER */
+    top:    20px;
+    right:   8px;
+    bottom:  8px;
+    left:    8px;
+  }
+  @else {
+    top:    0;
+    right:  0;
+    bottom: 0;
+    left:   0;
+  }
 }
 
 %scrollable {
@@ -29,4 +38,42 @@
   -webkit-overflow-scrolling: touch;
   // without min-height:0 overflow scrolling doesn't work
   min-height: 0;
+}
+
+@if $debugger {
+  /* INI: DEBUGGER */
+  body > div {
+    top:    0 !important;
+    right:  0 !important;
+    bottom: 0 !important;
+    left:   0 !important;
+  }
+  div {
+    & {
+      box-shadow: 0 0 0 1px rgba($debugger-color,.5) inset;
+      font-size: 0;
+      background: rgba($debugger-background,$debugger-opacity);
+    }
+
+    &:before {
+      content: attr(class);
+      position: absolute;
+      font-family: monaco;
+      font-size: 10px;
+      background: $debugger-color;
+      padding: 2px 3px 1px;
+      top: 0;
+      right: 0;
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgba($debugger-active-background,$debugger-active-opacity);
+      box-shadow: 0 0 0 1px rgba($debugger-active-color,.8) inset;
+      &:before {
+        background: $debugger-active-color;
+      }
+    }
+  }
+  /* END: DEBUGGER */
 }

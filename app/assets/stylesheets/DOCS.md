@@ -1,9 +1,12 @@
 # OPTIONS
 
+- layouts:        [ flex, fixed, stacked, off-canvas ]
+  - orientation:  [ vertical, columns, horizontal, rows ]
+
+
 - animations:   [  ]
-- behaviors:    [ reveal, push, appear; ]
-- layouts:      [ vertical, horizontal, columns, stacked, off-canvas; ]
-- breakpoints:  [ phone, tablet, laptop, desktop, cinema; ]
+- behaviors:    [ reveal, push, appear ]
+- breakpoints:  [ phone, tablet, laptop, desktop, cinema ]
 - attributes:   [ scrollable, flexible ]
 - off-canvas:   [ position, animation, target ]
 - layer:        [ dialog, backdrop, front, next, current, back ]

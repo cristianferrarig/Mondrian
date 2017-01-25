@@ -6,124 +6,131 @@
 %fixed-right  { @extend %stretch; left:   auto; }
 
 
-// Layout Structure
-@mixin fixed-vertical-layout($module-config) {
+// TEMPORAL
+@mixin fixed-combinations-layout($definition) {
+  $orientation:   map-get($definition, orientation);
+  $regions:       map-get($definition, regions);
 
-  $module-name: map-get($module-config, name);
-  $regions:     map-get($module-config, regions);
+  $header-size:   "";
+  $nav-size:      "";
+  $footer-size:   "";
+  $menu-size:     "";
+  $aside-size:    "";
 
-  // Contendrá la posición de la region flexible.
-  $flex_region_number:       length($regions);
-  // Aquí se distribuiran los elementos segun su posición.
-  $pre_flex_region_map:      ();
-  $post_flex_region_map:     ();
+  @if ($orientation == horizontal) {
+    $menu-size:    map-get( nth($regions,1), size );
+    $nav-size:     map-get( nth($regions,2), size );
+    $aside-size:   map-get( nth($regions,4), size );
 
-  @each $region_number, $region_values in $regions {
-
-    // Obtener la posición de contenedor flexible.
-    $is_flexible: if(map-get($region_values, flexible), true, false);
-
-    // Preparar region para ser agrupada.
-    $region_to_merge: ( #{$region_number}: map-deep-get($regions, $region_number) );
-
-    @if ($is_flexible) {
-      // Setea el numero del contenedor flexible
-      $flex_region_number: $region_number;
+    @if $debugger {
+      /* INI: DEBUGGER */
+      &-menu         ~ &-nav  { left:  $menu-size  + ($debugger-spacing * 2); }
+      &-menu         ~ &-body { left:  $menu-size  + ($debugger-spacing * 2); }
+      &-nav          ~ &-body { left:  $nav-size   + ($debugger-spacing * 2); }
+      &-aside        ~ &-body { right: $aside-size + ($debugger-spacing * 2); }
+      &-menu + &-nav ~ &-body { left:  $menu-size  + $nav-size + ($debugger-spacing * 3); }
     }
     @else {
-      // Asignar a cada region a su respectivo grupo
-      @if ($region_number < $flex_region_number) {
-        $pre_flex_region_map: map-merge($pre_flex_region_map, $region_to_merge);
-      }
-      @else if ($region_number > $flex_region_number) {
-        $post_flex_region_map: map-merge($post_flex_region_map, $region_to_merge);
-      }
+      &-menu         ~ &-nav  { left:  $menu-size; }
+      &-menu         ~ &-body { left:  $menu-size; }
+      &-nav          ~ &-body { left:  $nav-size; }
+      &-aside        ~ &-body { right: $aside-size; }
+      &-menu + &-nav ~ &-body { left:  $menu-size + $nav-size; }
     }
   }
 
-  @include debug($pre_flex_region_map);
-  @include debug($post_flex_region_map);
+  @else if ($orientation == vertical) {
+    $header-size: map-get( nth($regions,1), size );
+    $nav-size:    map-get( nth($regions,2), size );
+    $footer-size: map-get( nth($regions,4), size );
 
-  // Temporal variables
-  $header-size: map-deep-get($regions, 1, size);
-  $nav-size:    map-deep-get($regions, 2, size);
-  $footer-size: map-deep-get($regions, 4, size);
-
-  // Module definition
-  .#{$module-name} {
-
-    $combinations: combine($regions);
-    //@include debug($combinations);
-
-    &        { @extend %fixed-view; }
-    &-body   { @extend %fixed-view; }
-    &-header { @extend %fixed-top;  }
-    &-nav    { @extend %fixed-top; }
-    &-footer { @extend %fixed-bottom; }
-
-    &-header { height: $header-size; }
-    &-nav    { height: $nav-size; }
-    &-footer { height: $footer-size; }
-
-    &-header         ~ &-nav  { top:    $header-size; }
-    &-header         ~ &-body { top:    $header-size; }
-    &-nav            ~ &-body { top:    $nav-size; }
-    &-footer         ~ &-body { bottom: $footer-size; }
-    &-header + &-nav ~ &-body { top:    $header-size + $nav-size; }
+    @if $debugger {
+      /* INI: DEBUGGER */
+      &-header         ~ &-nav  { top:    $header-size + $debugger-label + $debugger-spacing; }
+      &-header         ~ &-body { top:    $header-size + $debugger-label + $debugger-spacing; }
+      &-nav            ~ &-body { top:    $nav-size    + $debugger-label + $debugger-spacing; }
+      &-footer         ~ &-body { bottom: $footer-size + ($debugger-spacing * 2); }
+      &-header + &-nav ~ &-body { top:    $header-size + $nav-size + $debugger-label + ($debugger-spacing * 2); }
+    }
+    @else {
+      &-header         ~ &-nav  { top:    $header-size; }
+      &-header         ~ &-body { top:    $header-size; }
+      &-nav            ~ &-body { top:    $nav-size; }
+      &-footer         ~ &-body { bottom: $footer-size; }
+      &-header + &-nav ~ &-body { top:    $header-size + $nav-size; }
+    }
   }
-
-  // Only for debug
-  $background: #DDD;
-
-  .#{$module-name} {
-    &-header { background-color: lighten($background,12%); }
-    &-nav    { background-color: lighten($background,10%); }
-    &-body   { background-color: lighten($background, 5%); }
-    &-footer { background-color: lighten($background,10%); }
+  @else {
+    @warn "Error";
   }
 
 }
 
 
-// Layout Structure
-@mixin fixed-horizontal-layout($module-config) {
+@mixin fixed-layout($definition) {
+  $name:          map-get($definition, name);
+  $orientation:   map-get($definition, orientation);
+  $regions:       map-get($definition, regions);
 
-  $module-name: map-deep-get($module-config, name);
-  $regions:     map-get($module-config, regions);
+  $content-index: length($regions);
+  $content-pre:   ();
+  $content-post:  ();
 
-  // Temporal variables
-  $menu-size:   map-deep-get($regions, 1, size);
-  $nav-size:    map-deep-get($regions, 2, size);
-  $aside-size:  map-deep-get($regions, 4, size);
+  // @include debug($definition,definition);
+  // @include debug($regions,regions);
 
-  // Module definition
-  .#{$module-name} {
-    &       { @extend %fixed-view; }
-    &-body  { @extend %fixed-view; }
+  .#{$name} {
 
-    &-menu  { @extend %fixed-left; }
-    &-nav   { @extend %fixed-left; }
-    &-aside { @extend %fixed-right; }
+    & { @extend %fixed-view; }
 
-    &-menu  { width: $menu-size; }
-    &-nav   { width: $nav-size; }
-    &-aside { width: $aside-size; }
+    @each $region in $regions {
 
-    &-menu         ~ &-nav  { left:  $menu-size; }
-    &-menu         ~ &-body { left:  $menu-size; }
-    &-nav          ~ &-body { left:  $nav-size; }
-    &-aside        ~ &-body { right: $aside-size; }
-    &-menu + &-nav ~ &-body { left:  $menu-size + $nav-size; }
+      $index:       index($regions,$region);
+      $region-name: map-get($region,name);
+      $is_flexible: map-get($region,flexible);
+
+      @include debug($region,"region #{$index}: #{$region-name}");
+
+      $size-value:  map-get($region,size);
+      $size-prop:   "";
+      $position:    "";
+
+      @if ($is_flexible) {
+        $content-index: $index;
+        $position: view;
+      }
+      @else {
+        @if ($index < $content-index ) {
+          $position: start;
+          $content-pre: join($content-pre, $index, comma);
+        }
+        @else if ($index > $content-index) {
+          $position: end;
+          $content-post: join($content-post, $index, comma);
+        }
+        @if ($orientation == horizontal) {
+          $position: if($position == start, left, right);
+          $size-prop: width;
+        }
+        @else if ($orientation == vertical) {
+          $position: if($position == start, top, bottom);
+          $size-prop: height;
+        }
+      }
+
+      &-#{$region-name} {
+        @extend %fixed-#{$position};
+        #{$size-prop}: $size-value;
+      }
+
+      @include fixed-combinations-layout($definition);
+
+    }
+
   }
 
-  // Only for debug
-  $background: #DDD;
-
-  .#{$module-name} {
-    &-menu  { background-color: lighten($background,12%); }
-    &-nav   { background-color: lighten($background,10%); }
-    &-body  { background-color: lighten($background,5%); }
-    &-aside { background-color: lighten($background,10%); }
-  }
+  @include debug($content-index, "Content index");
+  @include debug($content-pre,   "Pre content");
+  @include debug($content-post,  "Post content");
 
 }

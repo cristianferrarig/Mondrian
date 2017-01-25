@@ -1,3 +1,64 @@
+$debugger:                      true !default;
+$debugger-spacing:               8px !default;
+$debugger-label:                20px !default;
+$debugger-label:                20px !default;
+
+$debugger-color:                #333 !default;
+$debugger-background:           #999 !default;
+$debugger-opacity:               0.1 !default;
+
+$debugger-active-color:      #156AEB !default;
+$debugger-active-background:   white !default;
+$debugger-active-opacity:        0.2 !default;
+
+
+@function getOption($option) {
+  @return map-deep-get($mondrian, options, $option, content);
+}
+
+$mondrian: (
+  options: (
+    name: (
+      value: "custom value",
+      required: true,
+    ),
+    class: (
+      value: "custom value",
+      required: false,
+    ),
+    layout: (
+      value: fixed flex off-canvas stacked,
+      required: true,
+    ),
+    regions: (
+      value: list,
+      required: true,
+    ),
+    orientation: (
+//    for: fixed flex,
+      value: vertical horizontal,
+      required: false,
+    ),
+  ),
+
+
+  layouts: (
+    fixed: (
+      need: orientation,
+    ),
+    flex: (
+      need: orientation,
+    ),
+    off-canvas: (
+      need: orientation,
+    ),
+    stacked: (
+      need: orientation,
+    ),
+  ),
+
+);
+
 $animations: (
   reveal,
   push,
@@ -5,12 +66,17 @@ $animations: (
 );
 
 $layouts: (
-  vertical,
-  horizontal,
-  columns,
+  fixed,
+  flex,
   stacked,
   off-canvas,
 );
+
+$orientations: (
+  vertical,
+  horizontal,
+);
+
 
 $breakpoints: (
   phone:      "",
